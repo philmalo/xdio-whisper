@@ -88,6 +88,15 @@ cd ..
  <!-- to verify, had errors following instructions [here](https://developer.nvidia.com/cuda-downloads). The `cuda-toolkit-12-4` got installed but in my case I had issues compiling whisper with an error stemming from nvcc. Reinstalling, or rather installing the generic(?) version fixed nvcc. Also, `nvidia-driver-550-open` couldn't be installed. the `cuda-drivers-550`did get installed. -->
 Follow the instructions found [here](https://developer.nvidia.com/cuda-downloads).
 
+```bash
+#install repo
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+# The cuda package installs all CUDA Toolkit and Driver packages. Handles upgrading to the next version of the cuda package when it’s released.
+sudo apt-get -y install cuda
+```
+
 Then Fetch [Whisper](https://github.com/ggerganov/whisper.cpp) (as submodule), download the model and build it.
 ```bash
 git submodule update --init --remote --recursive
@@ -97,12 +106,13 @@ make clean
 WHISPER_CUDA=1 make -j
 cd ..
 ```
+<!-- the next section may be unneeded if the installation of the `cuda` package works like I think it does -->
 If you get an error about nvcc, try to install the `nvidia-cuda-toolkit` instead.
 ```bash
 sudo apt-get install nvidia-cuda-toolkit
 make clean
 WHISPER_CUDA=1 make -j
-cd..
+cd ..
 ```
 Install the Node dependencies with npm.
 
